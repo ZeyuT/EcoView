@@ -1,0 +1,8 @@
+D:\OneDrive\PhD\work\biofilm\data\2024-02-22\2024-02-22-A1_cropped.tif
+D:\OneDrive\PhD\work\biofilm\data\2024-02-22\2024-02-22-A2_cropped.tif
+D:\OneDrive\PhD\work\biofilm\data\2024-02-22\2024-02-22-A3_cropped.tif
+D:\OneDrive\PhD\work\biofilm\data\2024-02-22\2024-02-22-control_cropped.tif
+D:\OneDrive\PhD\work\biofilm\data\2024-02-22\2024-02-26-A1_cropped.tif
+D:\OneDrive\PhD\work\biofilm\data\2024-02-22\2024-02-26-A2_cropped.tif
+D:\OneDrive\PhD\work\biofilm\data\2024-02-22\2024-02-26-A3_cropped.tif
+D:\OneDrive\PhD\work\biofilm\data\2024-02-22\2024-02-26-control_cropped.tif

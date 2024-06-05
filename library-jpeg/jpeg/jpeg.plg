@@ -1,0 +1,179 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: jpeg - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\Adam\AppData\Local\Temp\RSP325D.tmp" with contents
+[
+/nologo /MTd /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /Fp"Debug/jpeg.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /c 
+"C:\Projects\RetImageProc\jpeg\jcapimin.c"
+"C:\Projects\RetImageProc\jpeg\jcapistd.c"
+"C:\Projects\RetImageProc\jpeg\jccoefct.c"
+"C:\Projects\RetImageProc\jpeg\jccolor.c"
+"C:\Projects\RetImageProc\jpeg\jcdctmgr.c"
+"C:\Projects\RetImageProc\jpeg\jchuff.c"
+"C:\Projects\RetImageProc\jpeg\jcinit.c"
+"C:\Projects\RetImageProc\jpeg\jcmainct.c"
+"C:\Projects\RetImageProc\jpeg\jcmarker.c"
+"C:\Projects\RetImageProc\jpeg\jcmaster.c"
+"C:\Projects\RetImageProc\jpeg\jcomapi.c"
+"C:\Projects\RetImageProc\jpeg\jcparam.c"
+"C:\Projects\RetImageProc\jpeg\jcphuff.c"
+"C:\Projects\RetImageProc\jpeg\jcprepct.c"
+"C:\Projects\RetImageProc\jpeg\jcsample.c"
+"C:\Projects\RetImageProc\jpeg\jctrans.c"
+"C:\Projects\RetImageProc\jpeg\jdapimin.c"
+"C:\Projects\RetImageProc\jpeg\jdapistd.c"
+"C:\Projects\RetImageProc\jpeg\jdatadst.c"
+"C:\Projects\RetImageProc\jpeg\jdatasrc.c"
+"C:\Projects\RetImageProc\jpeg\jdcoefct.c"
+"C:\Projects\RetImageProc\jpeg\jdcolor.c"
+"C:\Projects\RetImageProc\jpeg\jddctmgr.c"
+"C:\Projects\RetImageProc\jpeg\jdhuff.c"
+"C:\Projects\RetImageProc\jpeg\jdinput.c"
+"C:\Projects\RetImageProc\jpeg\jdmainct.c"
+"C:\Projects\RetImageProc\jpeg\jdmarker.c"
+"C:\Projects\RetImageProc\jpeg\jdmaster.c"
+"C:\Projects\RetImageProc\jpeg\jdmerge.c"
+"C:\Projects\RetImageProc\jpeg\jdphuff.c"
+"C:\Projects\RetImageProc\jpeg\jdpostct.c"
+"C:\Projects\RetImageProc\jpeg\jdsample.c"
+"C:\Projects\RetImageProc\jpeg\jdtrans.c"
+"C:\Projects\RetImageProc\jpeg\jerror.c"
+"C:\Projects\RetImageProc\jpeg\jfdctflt.c"
+"C:\Projects\RetImageProc\jpeg\jfdctfst.c"
+"C:\Projects\RetImageProc\jpeg\jfdctint.c"
+"C:\Projects\RetImageProc\jpeg\jidctflt.c"
+"C:\Projects\RetImageProc\jpeg\jidctfst.c"
+"C:\Projects\RetImageProc\jpeg\jidctint.c"
+"C:\Projects\RetImageProc\jpeg\jidctred.c"
+"C:\Projects\RetImageProc\jpeg\jmemansi.c"
+"C:\Projects\RetImageProc\jpeg\jmemmgr.c"
+"C:\Projects\RetImageProc\jpeg\jquant1.c"
+"C:\Projects\RetImageProc\jpeg\jquant2.c"
+"C:\Projects\RetImageProc\jpeg\jutils.c"
+]
+Creating command line "cl.exe @C:\Users\Adam\AppData\Local\Temp\RSP325D.tmp" 
+Creating temporary file "C:\Users\Adam\AppData\Local\Temp\RSP325E.tmp" with contents
+[
+/nologo /out:"Debug\jpeg.lib" 
+.\Debug\jcapimin.obj
+.\Debug\jcapistd.obj
+.\Debug\jccoefct.obj
+.\Debug\jccolor.obj
+.\Debug\jcdctmgr.obj
+.\Debug\jchuff.obj
+.\Debug\jcinit.obj
+.\Debug\jcmainct.obj
+.\Debug\jcmarker.obj
+.\Debug\jcmaster.obj
+.\Debug\jcomapi.obj
+.\Debug\jcparam.obj
+.\Debug\jcphuff.obj
+.\Debug\jcprepct.obj
+.\Debug\jcsample.obj
+.\Debug\jctrans.obj
+.\Debug\jdapimin.obj
+.\Debug\jdapistd.obj
+.\Debug\jdatadst.obj
+.\Debug\jdatasrc.obj
+.\Debug\jdcoefct.obj
+.\Debug\jdcolor.obj
+.\Debug\jddctmgr.obj
+.\Debug\jdhuff.obj
+.\Debug\jdinput.obj
+.\Debug\jdmainct.obj
+.\Debug\jdmarker.obj
+.\Debug\jdmaster.obj
+.\Debug\jdmerge.obj
+.\Debug\jdphuff.obj
+.\Debug\jdpostct.obj
+.\Debug\jdsample.obj
+.\Debug\jdtrans.obj
+.\Debug\jerror.obj
+.\Debug\jfdctflt.obj
+.\Debug\jfdctfst.obj
+.\Debug\jfdctint.obj
+.\Debug\jidctflt.obj
+.\Debug\jidctfst.obj
+.\Debug\jidctint.obj
+.\Debug\jidctred.obj
+.\Debug\jmemansi.obj
+.\Debug\jmemmgr.obj
+.\Debug\jquant1.obj
+.\Debug\jquant2.obj
+.\Debug\jutils.obj
+]
+Creating command line "link.exe -lib @C:\Users\Adam\AppData\Local\Temp\RSP325E.tmp"
+<h3>Output Window</h3>
+Compiling...
+jcapimin.c
+C:\Projects\RetImageProc\jpeg\jmorecfg.h(161) : warning C4142: benign redefinition of type
+jcapistd.c
+jccoefct.c
+jccolor.c
+jcdctmgr.c
+jchuff.c
+jcinit.c
+jcmainct.c
+C:\Projects\RetImageProc\jpeg\jcinit.c(59) : warning C4761: integral size mismatch in argument; conversion supplied
+jcmarker.c
+jcmaster.c
+jcomapi.c
+jcparam.c
+jcphuff.c
+jcprepct.c
+jcsample.c
+jctrans.c
+jdapimin.c
+jdapistd.c
+jdatadst.c
+C:\Projects\RetImageProc\jpeg\jmorecfg.h(161) : warning C4142: benign redefinition of type
+jdatasrc.c
+jdcoefct.c
+C:\Projects\RetImageProc\jpeg\jmorecfg.h(161) : warning C4142: benign redefinition of type
+jdcolor.c
+C:\Projects\RetImageProc\jpeg\jmorecfg.h(161) : warning C4142: benign redefinition of type
+jddctmgr.c
+jdhuff.c
+jdinput.c
+jdmainct.c
+jdmarker.c
+jdmaster.c
+jdmerge.c
+jdphuff.c
+jdpostct.c
+jdsample.c
+jdtrans.c
+jerror.c
+C:\Projects\RetImageProc\jpeg\jmorecfg.h(161) : warning C4142: benign redefinition of type
+jfdctflt.c
+C:\Projects\RetImageProc\jpeg\jmorecfg.h(161) : warning C4142: benign redefinition of type
+jfdctfst.c
+C:\Projects\RetImageProc\jpeg\jmorecfg.h(161) : warning C4142: benign redefinition of type
+jfdctint.c
+jidctflt.c
+jidctfst.c
+jidctint.c
+jidctred.c
+jmemansi.c
+C:\Projects\RetImageProc\jpeg\jmorecfg.h(161) : warning C4142: benign redefinition of type
+jmemmgr.c
+C:\Projects\RetImageProc\jpeg\jmorecfg.h(161) : warning C4142: benign redefinition of type
+jquant1.c
+C:\Projects\RetImageProc\jpeg\jmorecfg.h(161) : warning C4142: benign redefinition of type
+jquant2.c
+C:\Projects\RetImageProc\jpeg\jmorecfg.h(161) : warning C4142: benign redefinition of type
+jutils.c
+Creating library...
+
+
+
+<h3>Results</h3>
+jpeg.lib - 0 error(s), 12 warning(s)
+</pre>
+</body>
+</html>
