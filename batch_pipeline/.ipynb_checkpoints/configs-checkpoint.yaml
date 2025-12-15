@@ -1,0 +1,5 @@
+mass_threshold: 0.1
+max_height: 300
+min_size: 50
+top_height: 100
+downsample_rate: [1,1,1]

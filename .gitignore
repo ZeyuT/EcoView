@@ -2,5 +2,8 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/Interface/EcoView_src/.vs/
-
+Interface/EcoView_src/.vs/
+batch_pipeline/archive
+batch_pipeline/job_output
+batch_pipeline/output
+batch_pipeline/results

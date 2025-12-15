@@ -1,0 +1,7 @@
+bottom_height: 500
+mass_threshold: 0.07
+max_height: 300
+min_size: 50
+target_cols: 512
+target_slices: 512
+top_height: 100
