@@ -22,7 +22,7 @@ static int		LastRows=0,LastCols=0;
 SCROLLINFO		BarPos;
 RECT			MainRect;
 
-ScaleBarCol = IMAGE_COLS - 30, // X of scalebar origin (bottom-right)
+ScaleBarCol = IMAGE_COLS - 30; // X of scalebar origin (bottom-right)
 ScaleBarRow = IMAGE_ROWS - 30;  // Y of scalebar origin (bottom-right)
 ScaleBarXlen = 57;
 ScaleBarYlen = 57;
@@ -274,7 +274,7 @@ if (DisplayImageDetails == 1)
 
 if (DisplayImageDetails == 1  &&  ImageTypeLoaded == 1)
   {
-  text_row=300;
+  text_row=400;
   sprintf(display_message,"%s",image_filename);
   TextOut(hDC,30,text_row,display_message,strlen(display_message));
   if (DisplayView == 0  ||  DisplayView == 1)
@@ -444,6 +444,10 @@ switch(uMsg)
   {
   case WM_INITDIALOG:
 	SetDlgItemInt(hDlg,IDC_EDIT1,MassThreshold,FALSE);
+	SetDlgItemInt(hDlg, IDC_EDIT5, CutoffHeight, FALSE);
+	SetDlgItemInt(hDlg, IDC_EDIT6, baseline_threshold_x, FALSE);
+	SetDlgItemInt(hDlg, IDC_EDIT7, baseline_threshold_y, FALSE);
+
 	SetDlgItemInt(hDlg,IDC_EDIT2,MinCCSize,FALSE);
 	SetDlgItemInt(hDlg,IDC_EDIT3,ProjThreshold,FALSE);
 	SetDlgItemInt(hDlg,IDC_EDIT4,MedianWindowSize,FALSE);
@@ -503,6 +507,18 @@ switch(uMsg)
 		MedianWindowSize=GetDlgItemInt(hDlg,IDC_EDIT4,&Success,FALSE);
 		if (MedianWindowSize < 1) MedianWindowSize=1;
 		if (MedianWindowSize > 15) MedianWindowSize=15;
+		break;
+		case IDC_EDIT5:
+		CutoffHeight = GetDlgItemInt(hDlg, IDC_EDIT5, &Success, FALSE);
+		if (CutoffHeight < 0) CutoffHeight = 0;
+		break;
+		case IDC_EDIT6:
+		baseline_threshold_x = GetDlgItemInt(hDlg, IDC_EDIT6, &Success, FALSE);
+		if (baseline_threshold_x < 0) baseline_threshold_x = 0;
+		break;
+		case IDC_EDIT7:
+		baseline_threshold_y = GetDlgItemInt(hDlg, IDC_EDIT7, &Success, FALSE);
+		if (baseline_threshold_y < 0) baseline_threshold_y = 0;
 		break;
 	  case IDC_CHECK1:
 		cc_filter_on=(cc_filter_on+1)%2;

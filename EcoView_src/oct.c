@@ -15,13 +15,19 @@ void ProcessOCT()
 int		  x,y,z,i,t;
 int		  hist[256],chist[256];
 void	  RegionGrow();
+void	  LinearRegression();
+
 int		  *indices,RegionSize;
 int		  *queue;
 int		  min,max,density_threshold;
 int		  *hist_proj;
 double	  average,avg_diff,stddev;
 int		  dx,dy,w,list[1000],list_total,j,smallest,temp;
-int		  target_base_z, shifted_z, thickness;
+int			xz_baseline[1000], yz_baseline[1000];
+int			pred_z;
+double  slope, intercept;
+int		  max_base_z, min_base_z, pre_z, shifted_z, thickness, found_flag;
+
 if (oct_stack == NULL)
   return;	/* data not loaded */
 
@@ -39,7 +45,7 @@ if (oct_stack == NULL)
 oct_proc=(unsigned char *)calloc(ROWS*COLS*TotalSlices,1);
 for (x=0; x<TotalSlices; x++)
   for (y=0; y<COLS; y++)
-	for (z=0; z<ROWS; z++)
+	for (z=CutoffHeight; z<ROWS; z++)
 	  {
 	  oct_proc[(x*ROWS*COLS)+(z*COLS+y)]=oct_stack[(x*ROWS*COLS)+(z*COLS+y)];
 	  }
@@ -47,6 +53,7 @@ for (x=0; x<TotalSlices; x++)
 
 		/* build cumulative histogram and threshold each Z column independently */
 		/* this allows for local adaptation, and works a little better than global thresholding */
+
 for (x=0; x<TotalSlices; x++)
   for (y=0; y<COLS; y++)
 	{
@@ -62,6 +69,7 @@ for (x=0; x<TotalSlices; x++)
 	  if ((double)(chist[t]) >= (double)(100-MassThreshold)/100.0*(double)ROWS)
 		break;
 	t--;
+
 	for (z=0; z<ROWS; z++)
 	  {
 	  if (oct_proc[(x*ROWS*COLS)+(z*COLS+y)] >= t)
@@ -74,7 +82,6 @@ for (x=0; x<TotalSlices; x++)
 		}
 	  }
 	}
-
 
 
 
@@ -170,29 +177,108 @@ if (proj_filter_on == 1)
   }
 
 	/* zeyut added on 01/23/2024 for correcting distortion */
-	/* threshold the projection map to extract baseline surface */
+	/* threshold the projection map to get baseline surface */
 baseline_cal=(int *)calloc(TotalSlices*COLS, sizeof(int));
-target_base_z = 1000;
+min_base_z = 1000;
+max_base_z = 0;
+for (x = 0; x < TotalSlices; x++)
+{
+	for (y = 0; y < COLS; y++)
+	{
+		z = CutoffHeight;
+		while (z < ROWS-1 && oct_x_proj[z*COLS + y] < baseline_threshold_x && oct_y_proj[z*TotalSlices + x] < baseline_threshold_y)
+			z++;
+		// if (z > max_base_z) max_base_z = z;
+		// if (z < min_base_z) min_base_z = z;
+		// Exclude empty/abnormal column by reusing previous estimated z. 
+
+		//if (max_base_z - z > 10) z = max_base_z;
+		//if (z - min_base_z > 100) z = min_base_z;
+
+		baseline_cal[x*COLS + y] = z;
+	}
+}
+
+// Draw estimated baseline on x-projection map
+memset(yz_baseline, 0, 1000);
+max_base_z = 0;
+for (y = 0; y < COLS; y++)
+{
+	z = CutoffHeight;
+	while (z < ROWS - 1 && oct_x_proj[z * COLS + y] < baseline_threshold_x)
+		z++;
+	//if (y>=50)
+	//{
+	//		slope=0.;
+	//		intercept=0.;
+	//		LinearRegression(yz_baseline,y-50,y-1,&slope,&intercept);
+	//		pred_z = (int)(slope*y+intercept);
+	//		if (abs(pred_z-z)>5) z=pred_z;
+	//}
+	//if (z > max_base_z) max_base_z = z;
+	//if (max_base_z - z > 10) z = max_base_z;
+	oct_x_proj[z * COLS + y] = 255;
+	yz_baseline[y] = z;
+}
+
+// Draw estimated baseline on y-projection map
+memset(xz_baseline, 0, 1000);
+max_base_z = 0;
+for (x = 0; x < TotalSlices; x++)
+{
+	z = CutoffHeight;
+	while (z < ROWS - 1 && oct_y_proj[z * TotalSlices + x] < baseline_threshold_y)
+		z++;
+	//if (x>=50)
+	//{
+	//		slope=0.;
+	//		intercept=0.;
+	//		LinearRegression(xz_baseline,x-50,x-1,&slope,&intercept);
+	//		pred_z = (int)(slope*x+intercept);
+	//		if (abs(pred_z-z)>5) z=pred_z;
+	//}
+	//if (z > max_base_z) max_base_z = z;
+	//if (max_base_z - z > 10) z = max_base_z;
+	oct_y_proj[z * TotalSlices + x] = 255;
+	xz_baseline[x] = z;
+}
+
+/* Median filter on baseline surface */
+w = 3;  /* w=1 => 3x3 window; w=2> 5x5 window, etc. */
 for (x = 0; x < TotalSlices; x++)
 	for (y = 0; y < COLS; y++)
 	{
-		z = 0;
-		while (oct_x_proj[z*COLS + y] < 180 && oct_y_proj[z*TotalSlices + x] < 180)
-			z++;
-		baseline_cal[x*COLS + y] = z;
-		if (z < target_base_z) target_base_z = z;
+		list_total = 0;
+		for (dx = -w; dx <= w; dx++)
+			for (dy = -w; dy <= w; dy++)
+			{
+				if (x + dx < 0 || x + dx >= TotalSlices || y + dy < 0 || y + dy >= COLS)
+					continue;
+				list[list_total] = baseline_cal[(x + dx) * COLS + y + dy];
+				list_total++;
+			}
+		for (i = 0; i <= list_total / 2; i++)
+		{
+			smallest = i;
+			for (j = i + 1; j < list_total; j++)
+				if (list[j] < list[smallest])
+					smallest = j;
+			temp = list[i];
+			list[i] = list[smallest];
+			list[smallest] = temp;
+		}
+		baseline_cal[x * COLS + y] = list[i - 1];	/* median value in window */
 	}
-
 	/* correction, add offsets to each column, not ready yet */
 /*
 for (x = 0; x < TotalSlices; x++)
 	for (y = 0; y < COLS; y++)
 	{
 		z = 0;
-		shifted_z = z - ((int)baseline_cal[x * COLS + y] - target_base_z);
+		shifted_z = z - ((int)baseline_cal[x * COLS + y] - min_base_z);
 		while (z < ROWS && shifted_z < ROWS)
 		{
-			shifted_z = z - ((int)baseline_cal[x * COLS + y] - target_base_z);
+			shifted_z = z - ((int)baseline_cal[x * COLS + y] - min_base_z);
 			if (shifted_z < 0) {
 				z++;
 				continue;
@@ -210,10 +296,17 @@ oct_depth_cal=(int*)calloc(TotalSlices*COLS,sizeof(int));
 for (x=0; x<TotalSlices; x++)
   for (y=0; y<COLS; y++)
 	{
-	z=80;
-	while (z < ROWS  &&  oct_proc[(x*ROWS*COLS)+(z*COLS+y)] == 0)
-	  z++;
-	oct_depth_cal[x * COLS + y] = z;
+	z = max(CutoffHeight, baseline_cal[x * COLS + y] - 200);
+	found_flag=0;
+	while (z < ROWS && oct_proc[(x * ROWS * COLS) + (z * COLS + y)] == 0)
+	{
+		z++;
+		found_flag=1;
+	}
+	if (found_flag)
+		oct_depth_cal[x * COLS + y] = z;
+	else
+		oct_depth_cal[x * COLS + y] = baseline_cal[x * COLS + y];
 	}
 
 		/* calculate depth map statistics */
@@ -231,9 +324,9 @@ for (x=0; x<TotalSlices; x++)
 	if (oct_depth_cal[x*COLS+y] < min) min= oct_depth_cal[x*COLS+y];
 	if (oct_depth_cal[x*COLS+y] > max) max= oct_depth_cal[x*COLS+y];
 	average+=(double)oct_depth_cal[x*COLS+y];
-	// base_z-15 is the approximate top surface height
-	thickness = (baseline_cal[x * COLS + y] - 15)- oct_depth_cal[x * COLS + y];
-	if (thickness>0) {
+	thickness = baseline_cal[x * COLS + y]-oct_depth_cal[x * COLS + y];
+	// ignore small noise (< 5 voxels) in thickness calculation
+	if (thickness>5) {
 		coverage_ratio += 1;
 		if (thickness < min_thickness) min_thickness = thickness;
 		if (thickness > max_thickness) max_thickness = thickness;
@@ -259,10 +352,11 @@ roughnessQ=stddev;
 roughnessA=avg_diff;
 		
 		/* median filter the depth map */
-		/* not this is currently for visualization only; we could do it before calculations (above) */
+		/* note this is currently for visualization only; we could do it before calculations (above) */
 if (median_filter_on == 1)
   {
   w=MedianWindowSize;  /* w=1 => 3x3 window; w=2> 5x5 window, etc. */
+  memset(list, 0, 1000);
   for (x=0; x<TotalSlices; x++)
 	for (y=0; y<COLS; y++)
 	  {
@@ -287,33 +381,6 @@ if (median_filter_on == 1)
 		}
 	  oct_depth_cal[x*COLS+y]=list[i-1];	/* median value in window */
 	  }
-	/*
-	memset(list, 0, 1000);;
-	for (x = 0; x < TotalSlices; x++)
-			for (y = 0; y < COLS; y++)
-			{
-					list_total = 0;
-					for (dx = -w; dx <= w; dx++)
-							for (dy = -w; dy <= w; dy++)
-							{
-									if (x + dx < 0 || x + dx >= TotalSlices || y + dy < 0 || y + dy >= COLS)
-											continue;
-									list[list_total] = baseline_cal[(x + dx) * COLS + y + dy];
-									list_total++;
-							}
-					for (i = 0; i <= list_total / 2; i++)
-					{
-							smallest = i;
-							for (j = i + 1; j < list_total; j++)
-									if (list[j] < list[smallest])
-											smallest = j;
-							temp = list[i];
-							list[i] = list[smallest];
-							list[smallest] = temp;
-					}
-					baseline_cal[x * COLS + y] = list[i - 1];
-			}
-	*/
   }
 
 
@@ -322,16 +389,55 @@ oct_depth = (unsigned char*)calloc(TotalSlices * COLS, 1);
 for (x=0; x<TotalSlices; x++)
   for (y=0; y<COLS; y++)
 	{
-	  oct_depth[x*COLS+y]=255-(unsigned char)(oct_depth_cal[x*COLS+y]/2);
+			//oct_depth[x * COLS + y] = (unsigned char)(oct_depth_cal[x * COLS + y] / 2);
+			oct_depth[x*COLS+y]= max(0, baseline_cal[x * COLS + y] - oct_depth_cal[x * COLS + y])/2;
 	}
 baseline = (unsigned char*)calloc(TotalSlices * COLS, 1);
 for (x = 0; x < TotalSlices; x++)
-		for (y = 0; y < COLS; y++)
+	for (y = 0; y < COLS; y++)
 		{
-				baseline[x*COLS+y]=255-(unsigned char)(baseline_cal[x*COLS+y]/2);
+			baseline[x*COLS+y]=255-(unsigned char)(baseline_cal[x*COLS+y]/2);
+			//baseline[x * COLS + y] = (unsigned char)baseline_cal[x * COLS + y]/2;
 		}
+oct_depth_equalized = (unsigned char*)calloc(TotalSlices * COLS, 1);
+for (x=0; x<TotalSlices; x++)
+  for (y=0; y<COLS; y++)
+	{
+		// ignore small noise (< 5 voxels) in thickness calculation
+		if (abs(baseline_cal[x * COLS + y] - oct_depth_cal[x * COLS + y])<5)
+				oct_depth_equalized[x * COLS + y]=0;
+		else
+				oct_depth_equalized[x*COLS+y]=255*max(0,baseline_cal[x*COLS+y]-oct_depth_cal[x*COLS+y])/max_thickness;
+	}
+free(baseline_cal);
+free(oct_depth_cal);
 
-
+}
+/* Fit a line in XY space, using a given set of points */
+void LinearRegression(int* y, /* y coordinates of points, x coordinates is indices */
+										int start_n, /* starting idx in x and y */
+										int end_n, /* ending idx in x and y */
+										double* slope, /* Slope of fitted line */
+										double* intercept)	/* intercept of fitted line */
+{
+		double sum_x = 0.0;
+		double sum_xx = 0.0;
+		double sum_xy = 0.0;
+		double sum_y = 0.0;
+		double sum_yy = 0.0;
+		double n_real = (double)(end_n-start_n+1);
+		double denominator;
+		int i;
+		for (i = start_n; i < end_n+1; ++i) {
+				sum_x += i;
+				sum_xx += i * i;
+				sum_xy += i * y[i];
+				sum_y += y[i];
+				sum_yy += y[i] * y[i];
+		}
+		denominator = n_real * sum_xx - sum_x * sum_x;
+		*slope = (n_real * sum_xy - sum_x * sum_y) / denominator;
+		*intercept = (sum_y - *slope * sum_x) / n_real;
 }
 
 

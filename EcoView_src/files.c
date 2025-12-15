@@ -119,3 +119,80 @@ return(0);
 }
 
 
+
+	/*******************************************************************
+	** Saves an image to a file in either jpeg (FileType=1) or PPM/PGM
+	** (FileType=2) format.  Returns a 1 after a successful save, 0 otherwise.
+	*******************************************************************/
+
+int WriteImage(char			 *filename,		/* complete name of image to save */
+			   unsigned char *image,		/* image data, RGB L->R T->D format */
+			   int			 ROWS,int COLS,	/* size of image */
+			   int			 BPP,			/* bytes per pixel of image */
+			   int			 FileType)		/* 2 jpeg, 1 PPM/PGM */
+
+{
+FILE							*fpt;
+struct jpeg_compress_struct		cinfo;
+struct jpeg_error_mgr			jerr;
+JSAMPROW						row_pointer[1];
+HDC								hDC;
+char							SaveText[250];
+
+if ((fpt=fopen(filename,"wb")) == NULL)
+  {
+  MessageBox(MainWnd,filename,"Unable to open for writing:",MB_APPLMODAL | MB_OK);
+  return(0);
+  }
+if (FileType == 2)
+  {
+  cinfo.err = jpeg_std_error(&jerr);
+  jpeg_create_compress(&cinfo);
+  jpeg_stdio_dest(&cinfo, fpt);
+  cinfo.image_width = COLS;
+  cinfo.image_height = ROWS;
+  cinfo.input_components = BPP;
+  if (BPP == 1)
+	cinfo.in_color_space=JCS_GRAYSCALE;
+  else
+    cinfo.in_color_space = JCS_RGB;
+  jpeg_set_defaults(&cinfo);
+  jpeg_set_quality(&cinfo, 100, TRUE );
+  jpeg_start_compress(&cinfo, TRUE);
+  hDC=GetDC(MainWnd);
+  sprintf(SaveText,"Writing %s ...",filename);
+  while (cinfo.next_scanline < cinfo.image_height)
+    {
+    if ((cinfo.next_scanline)%50 == 0)
+      {
+      strcat(SaveText,".");
+      TextOut(hDC,0,0,SaveText,strlen(SaveText));
+      }
+    row_pointer[0] = & image[cinfo.next_scanline*COLS*BPP];
+    (void) jpeg_write_scanlines(&cinfo, row_pointer, 1);
+    }
+  jpeg_finish_compress(&cinfo);
+  fclose(fpt);
+  jpeg_destroy_compress(&cinfo);
+
+  sprintf(SaveText, "Finished Writing %s", filename);
+  TextOut(hDC, 0, 0, SaveText, strlen(SaveText));
+  ReleaseDC(MainWnd,hDC);
+
+
+  return(1);
+  }
+else if (FileType == 1)
+  {
+  fprintf(fpt,"P%d %d %d 255\n",(BPP == 1 ? 5 : 6),COLS,ROWS);
+  fwrite(image,1,ROWS*COLS*BPP,fpt);
+  fclose(fpt);
+  return(1);
+  }
+else
+  {
+  MessageBox(NULL,"Unknown File Type","WriteImage() Error",MB_OK | MB_APPLMODAL);
+  fclose(fpt);
+  return(0);
+  }
+}

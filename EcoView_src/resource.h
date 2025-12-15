@@ -21,6 +21,9 @@
 #define IDC_CHECK1                      1022
 #define IDC_CHECK2                      1023
 #define IDC_CHECK3                      1024
+#define IDC_EDIT5                       1025
+#define IDC_EDIT6                       1027
+#define IDC_EDIT7                       1028
 #define IDM_EXIT                        40000
 #define ID_EXIT                         40000
 #define IDM_TEST                        40001
@@ -152,6 +155,7 @@
 #define ID_OPTIONS_ABOUTECOVIEW         40113
 #define ID_OPTIONS_ABOUT                40114
 #define ID_DISPLAY_BASESURFACE          40115
+#define ID_FILE_LOADBATCHLIST           40117
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -160,7 +164,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        110
-#define _APS_NEXT_COMMAND_VALUE         40116
+#define _APS_NEXT_COMMAND_VALUE         40118
 #define _APS_NEXT_CONTROL_VALUE         1025
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

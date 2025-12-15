@@ -13,7 +13,10 @@ int		SoftwareVersion;	/* 10's digit is main version #, 1's digit is for minor up
 
 char	CurrentPath[MAX_FILENAME_CHARS];
 char	image_filename[MAX_FILENAME_CHARS];
-
+char	image_basename[MAX_FILENAME_CHARS];
+char	image_savename[MAX_FILENAME_CHARS];
+char	filelist_path[MAX_FILENAME_CHARS];
+char	filename_buffer[MAX_FILENAME_CHARS];
 char	FilenameList[500][MAX_FILENAME_CHARS];
 int		TotalFilenames,FilenameIndex;
 int		ImageTypeLoaded;
@@ -36,18 +39,19 @@ int		DisplayScaleBar, ScaleBarRow, ScaleBarCol, ScaleBarXlen, ScaleBarYlen;
 		** (d) oct_x_proj stores a density view of the data in the x direction (ROWS x COLS)
 		** (e) oct_y_proj stores a density view of the data in the y direction (ROWS x TotalSlices)
 		*/
-unsigned char *oct_stack,*oct_proc,*oct_depth,*oct_x_proj,*oct_y_proj, *baseline;
+unsigned char *oct_stack,*oct_proc,*oct_depth, *oct_depth_equalized, *oct_x_proj,*oct_y_proj, *baseline;
 int				*oct_depth_cal, *baseline_cal;
 int			  ROWS,COLS,TotalSlices,CurrentSlice;
 double		  roughnessA,roughnessQ,coverage_ratio,min_thickness,max_thickness;
 		/* processing parameters */
-int		MassThreshold;
+int		MassThreshold, CutoffHeight, baseline_threshold_x, baseline_threshold_y;
 int		cc_filter_on,proj_filter_on,median_filter_on;
 int		MinCCSize,ProjThreshold,MedianWindowSize;
 
 		// Function prototypes
 LRESULT CALLBACK WndProc(HWND,UINT,WPARAM,LPARAM);
 int ReadImage(char *,unsigned char **,int *,int *);
+int WriteImage(char*, unsigned char*, int, int, int, int);
 void MakeDisplayImage(unsigned char *,int,int,int);
 void PaintImage();
 LRESULT CALLBACK MagFactProc(HWND,UINT,WPARAM,LPARAM);

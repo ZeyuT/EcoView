@@ -32,6 +32,7 @@ BEGIN
     POPUP "File"
     BEGIN
         MENUITEM "&Load Image",                 ID_FILE_LOADIMAGE
+        MENUITEM "&Load Batch List",            ID_FILE_LOADBATCHLIST
         MENUITEM SEPARATOR
         MENUITEM "&Quit",                       ID_FILE_QUIT
     END
@@ -77,24 +78,31 @@ BEGIN
     GROUPBOX        "",-1,7,7,126,36
 END
 
-ID_PARAMS_DIALOG DIALOGEX 0, 0, 253, 149
+ID_PARAMS_DIALOG DIALOGEX 0, 0, 253, 180
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Processing filters"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,99,120,50,14
-    EDITTEXT        IDC_EDIT1,99,12,40,14,ES_AUTOHSCROLL
-    LTEXT           "Mass threshold (%)",IDC_STATIC,15,15,65,8
-    LTEXT           "Min size (voxels)",IDC_STATIC,114,51,55,8
-    LTEXT           "Min density (%)",IDC_STATIC,114,72,52,8
-    LTEXT           "Window size (1...15)",IDC_STATIC,114,92,69,8
-    EDITTEXT        IDC_EDIT2,198,48,40,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT3,198,69,40,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT4,198,89,40,14,ES_AUTOHSCROLL
-    CONTROL         "Connected components",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,50,92,10
-    CONTROL         "Projection densities",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,71,79,10
-    CONTROL         "Depth median filter",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,91,78,10
-    LTEXT           "Filters (check to turn on)",IDC_STATIC,77,38,82,8
+    DEFPUSHBUTTON   "OK",IDOK,99,149,50,14
+    EDITTEXT        IDC_EDIT1,85,20,39,14,ES_AUTOHSCROLL
+    LTEXT           "Mass threshold (%)",IDC_STATIC,15,23,65,8
+    LTEXT           "Min size (voxels)",IDC_STATIC,114,80,55,8
+    LTEXT           "Min density (%)",IDC_STATIC,114,101,52,8
+    LTEXT           "Window size (1...15)",IDC_STATIC,114,121,69,8
+    EDITTEXT        IDC_EDIT2,198,77,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,198,98,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT4,198,118,40,14,ES_AUTOHSCROLL
+    CONTROL         "Connected components",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,79,92,10
+    CONTROL         "Projection densities",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,100,79,10
+    CONTROL         "Depth median filter",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,120,78,10
+    LTEXT           "Filters (check to turn on)",IDC_STATIC,77,67,82,8
+    LTEXT           "Cut-off height",IDC_STATIC,146,22,65,8
+    EDITTEXT        IDC_EDIT5,198,20,39,14,ES_AUTOHSCROLL
+    LTEXT           "Image Thresholds",IDC_STATIC,102,8,57,8
+    LTEXT           "Min Baseline density - X",IDC_STATIC,16,40,39,19
+    EDITTEXT        IDC_EDIT6,86,42,39,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT7,198,41,39,14,ES_AUTOHSCROLL
+    LTEXT           "Min Baseline density - Y",IDC_STATIC,146,38,42,19
 END
 
 
@@ -153,7 +161,7 @@ BEGIN
             VALUE "FileDescription", "Eco-Coating Image and Data Viewer"
             VALUE "FileVersion", "1.0"
             VALUE "InternalName", "ecoview software"
-            VALUE "LegalCopyright", "Copyright © 2023"
+            VALUE "LegalCopyright", "Copyright ?2023"
             VALUE "LegalTrademarks", "None"
             VALUE "ProductVersion", "1.0"
         END
@@ -195,8 +203,8 @@ BEGIN
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 246
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 142
+        TOPMARGIN, 1
+        BOTTOMMARGIN, 173
     END
 END
 #endif    // APSTUDIO_INVOKED

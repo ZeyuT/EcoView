@@ -1,0 +1,5 @@
+﻿  oct.c
+D:\OneDrive\PhD\work\biofilm\software\EcoView\EcoView_src\oct.c(389,106): warning C4244: '=': conversion from 'double' to 'unsigned char', possible loss of data
+D:\OneDrive\PhD\work\biofilm\software\EcoView\EcoView_src\oct.c(24,43): warning C4101: 'pre_z': unreferenced local variable
+D:\OneDrive\PhD\work\biofilm\software\EcoView\EcoView_src\oct.c(24,32): warning C4101: 'shifted_z': unreferenced local variable
+  EcoView.vcxproj -> D:\OneDrive\PhD\work\biofilm\software\EcoView\EcoView_src\Debug\EcoView.exe
