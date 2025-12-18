@@ -1,26 +1,26 @@
 # EcoView
 
-EcoView is an **OCT (Optical Coherence Tomography) 3D image processing** tool developed for the DARPA *eco-coating* project led by Clemson University. 
+EcoView is an OCT (Optical Coherence Tomography) 3D image processing tool developed for the DARPA *eco-coating* project led by Clemson University. 
 The goal of EcoView is to provide visualization and morphological analysis of underwater biofilm growth.
 
 It provides:
 
-- A **Windows desktop interface (C / Visual Studio)** for interactive inspection and processing of OCT images
-- A **Python batch pipeline** for scalable processing on HPC systems (e.g., Slurm)
+- A Windows desktop interface (C / Visual Studio) for interactive inspection and processing of OCT images
+- A Python batch pipeline for scalable processing on HPC systems (e.g., Slurm)
 
-The system produces **depth maps**, **height (thickness) maps**, **equalized visualizations**, **base surface estimation**, **morphology statistics**, and optional **3D surface exports (`.ply`)** and **time-lapse height map animation**.
+The system produces depth maps, height (thickness) maps, equalized visualizations, base surface estimation, morphology statistics, and optional 3D surface exports (`.ply`) and time-lapse height map animation.
 
 ---
 
 ## What EcoView Processes
 
-EcoView operates on **3D OCT volumes stored as multi-page TIFF files**.
+EcoView operates on 3D OCT volumes stored as multi-page .tiff/.tif/.oct files.
 
-- Conceptual volume shape:  
+- Volume shape:  
   `TotalSlices × Rows × Columns`
-- The core output is a **per-ray depth map**, which is converted into a **height map** representing biofilm thickness relative to a baseline surface.
+- The core output is a height map representing biofilm thickness relative to a baseline surface.
 - **Data size considerations:**  
-  EcoView is optimized for input volumes **smaller than ~300 MB**. In our project, raw OCT data can range from **1.4 GB to 4 GB** depending on channel number and spatial resolution.  
+  EcoView is optimized for input volumes **smaller than ~300 MB**. In our project, raw OCT data can range from 1.4 GB to 4 GB depending on channel number and spatial resolution.  
   For large raw volumes, it is strongly recommended to **downsize the data before processing**, which can be done via the provided utility (`batch_pipeline/batch_downsize.py`). Processing very large volumes directly may result in instability in the GUI and significantly increased runtime in the Python batch pipeline.
 ---
 
@@ -47,15 +47,15 @@ EcoView/
 ## Core Algorithm (High Level)
 
 Both the C (GUI) and Python (batch) implementations follow the same processing logic:
-1. **Load OCT volume**
-2. **Crop valid height range**
-3. **Per-column adaptive thresholding**
-4. **3D cleanup**
-5. **Base surface estimation**
-6. **Depth map computation**
-7. **Height map generation**
-8. **Morphological measurements**
-9. (python) **Smooth top-view animation**
+1. Load OCT volume
+2. Crop valid height range
+3. Per-column adaptive thresholding
+4. 3D cleanup
+5. Base surface estimation
+6. Depth map computation
+7. Height map generation
+8. Morphological measurements
+9. (python) Smooth top-view animation
 ---
 
 ## Python Batch Pipeline
