@@ -61,22 +61,22 @@ Both the C (GUI) and Python (batch) implementations follow the same processing l
 ## Python Batch Pipeline
 
 ### Dependencies
-
-  numpy>=1.23.5 \
-  scipy>=1.10.1 \
-  pandas>=1.5.3 \
-  scikit-image>=0.19.3 \
-  opencv-python>=4.7.0.72 \
-  tifffile>=2023.2.28 \
-  Pillow>=9.4.0 \
-  matplotlib>=3.7.1 \
-  PyYAML>=6.0 \
-  xmltodict>=0.13.0 \
-  numba>=0.56.4 \
-  h5py>=3.8.0 \
-  pystackreg>=0.2.7\
-  ipywidgets>=8.0.4 \
-  matplotlib-scalebar>=0.8.1 \
-  tqdm>=4.67.1 \
-  jupyter>=1.0.0 \
-  ipykernel>=6.21.2
+  
+    numpy>=1.23.5 \
+    scipy>=1.10.1 \
+    pandas>=1.5.3 \
+    scikit-image>=0.19.3 \
+    opencv-python>=4.7.0.72 \
+    tifffile>=2023.2.28 \
+    Pillow>=9.4.0 \
+    matplotlib>=3.7.1 \
+    PyYAML>=6.0 \
+    xmltodict>=0.13.0 \
+    numba>=0.56.4 \
+    h5py>=3.8.0 \
+    pystackreg>=0.2.7\
+    ipywidgets>=8.0.4 \
+    matplotlib-scalebar>=0.8.1 \
+    tqdm>=4.67.1 \
+    jupyter>=1.0.0 \
+    ipykernel>=6.21.2
